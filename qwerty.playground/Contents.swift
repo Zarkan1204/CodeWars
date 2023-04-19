@@ -457,3 +457,13 @@ sum_str("3", "")
 func nthEven(_ n: Int) -> Int {
 return(n - 1) * 2
 }
+func doubleInteger(_ num: Int) -> Int {
+num * 2
+}
+
+func goals(laLigaGoals: Int, copaDelReyGoals: Int, championsLeagueGoals: Int) -> Int {
+  return laLigaGoals + copaDelReyGoals + championsLeagueGoals
+}
+func getVolumeOfCuboid(length: Int, width: Int, height: Int) -> Int {
+  return length * width * height
+}
