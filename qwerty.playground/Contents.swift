@@ -467,3 +467,16 @@ func goals(laLigaGoals: Int, copaDelReyGoals: Int, championsLeagueGoals: Int) ->
 func getVolumeOfCuboid(length: Int, width: Int, height: Int) -> Int {
   return length * width * height
 }
+
+func update_light(_ current: String) -> String {
+    switch current {
+    case "green":
+        return "yellow"
+    case "yellow":
+        return "red"
+    case "red":
+        return "green"
+    default:
+        return "Invalid state"
+    }
+}
