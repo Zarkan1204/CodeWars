@@ -424,18 +424,6 @@ func fakeBin(digits: String) -> String {
 }
 fakeBin(digits: "288749")
 
-func firstNonConsecutive (_ arr: [Int]) -> Int? {
-    guard !arr.isEmpty else { return nil }
-    var result: Int?
-    for (index, value) in arr.enumerated() {
-       if arr[0] + index != value {
-            result = value
-            break
-        }
-    }
-
-    return nil
-}
 
 func flip(_ direction: String, _ a: [Int]) -> [Int] {
     direction == "R" ? a.sorted(by: >) : a.sorted(by: <)
@@ -479,4 +467,13 @@ func update_light(_ current: String) -> String {
     default:
         return "Invalid state"
     }
+}
+
+func converter(mpg: Int) -> Double {
+    let kpl = Double(mpg) * 0.354006189
+    return (kpl * 100).rounded() / 100
+}
+
+func otherAngle(a: Int, b: Int) -> Int {
+return 180 - a - b
 }
