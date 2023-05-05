@@ -477,3 +477,122 @@ func converter(mpg: Int) -> Double {
 func otherAngle(a: Int, b: Int) -> Int {
 return 180 - a - b
 }
+
+//MARK: - Бинарный поиск
+
+//Пример 1
+
+func binarySearch(array: [Int], item: Int) -> Int? {
+    
+    var low = 0
+    var high = array.count - 1
+    var mid = 0
+    var guess = 0
+    
+    while low <= high {
+        mid = (low + high) / 2
+        guess = array[mid]
+        
+        if guess == item {
+            return mid
+        } else if guess > item {
+            high = mid - 1
+        } else {
+            low = mid + 1
+        }
+    }
+    return nil
+}
+
+let binaryTestArray = [1, 3, 6, 7, 9, 12, 15, 18]
+binarySearch(array: binaryTestArray, item: 7)
+
+//MARK: - Сортировка пузырьком - O(n^2)
+
+var numbers = [4, 6, 1, 12, 3, 22, 14, 0, -2]
+
+func bubbleSort(array: inout [Int]) {
+    
+    for i in 0..<array.count {
+        
+        let index = array.count - 1 - i
+        
+        for j in 0..<index {
+            
+            let number = array[j]
+            let nextNumber = array[j + 1]
+            
+            if number > nextNumber {
+                array[j] = nextNumber
+                array[j + 1] = number
+            }
+        }
+    }
+}
+
+bubbleSort(array: &numbers)
+
+//MARK: - Метод двойного указателя
+
+//Пример 3
+
+//топот
+//А роза Азора
+
+func isPalindrom(numberAsString: String) -> Bool {
+    let resultString = numberAsString.replacingOccurrences(of: " ", with: "").lowercased()
+    let charactersArray = Array(resultString)
+    var rightPointer = charactersArray.count - 1
+    
+    if charactersArray.count == 1 {
+        return true
+    }
+    
+    for index in 0..<charactersArray.count {
+        if charactersArray[index] != charactersArray[rightPointer] {
+            return false
+        }
+        rightPointer -= 1
+    }
+    return true
+}
+isPalindrom(numberAsString: "топот")
+
+
+//MARK: Скользящее окно
+
+struct MaxSumRange {
+    var maxSum = 0
+    var start = 0
+    var end = 0
+}
+
+func slidingWindow(array: [Int]) -> MaxSumRange? {
+    
+    //инициализируем переменные
+    var currSum = 0
+    var startIndex = 0
+    var maxSumRange: MaxSumRange? = nil
+    
+    //проходимся по массиву
+    for endIndex in 0..<array.count {
+        currSum += array[endIndex]
+        
+        //Если текущая сумма больше максимальной, обновляем границы подмассива и общую сумму
+        if maxSumRange == nil || currSum > maxSumRange?.maxSum ?? 0 {
+            maxSumRange = MaxSumRange(maxSum: currSum,
+                                      start: startIndex,
+                                      end: endIndex)
+        }
+        
+        //В какой-то момент может стать так, что сумма станет меньше 0
+        //Это означает, что все, что мы сложили ранее имеет отрицательных чисел больше, чем положительных
+        //Не имеет смысла прибавлять число, которое даст отрицательную сумму, т.к. получим уменьшенное число/сумму
+        
+        if currSum < 0 {
+            currSum = 0
+            startIndex = endIndex + 1
+        }
+    }
+    return maxSumRange
+}
