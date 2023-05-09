@@ -596,3 +596,76 @@ func slidingWindow(array: [Int]) -> MaxSumRange? {
     }
     return maxSumRange
 }
+
+//MARK: - Массив
+
+//Пример 1 - Найти второй минимальный элемент в массиве
+
+let shuffledArray = [12, 3, 5, 34, 42, 14, 2, 6, 44]
+
+func findSecondMinValue(array: [Int]) -> Int? {
+    
+    var minValue = Int.max //3
+    var secondMinValue = Int.max //5
+    
+    for index in 0..<array.count {
+        if array[index] < minValue {
+            secondMinValue = minValue
+            minValue = array[index]
+        } else if array[index] < secondMinValue && array[index] != minValue {
+            secondMinValue = array[index]
+        }
+    }
+    
+    if secondMinValue != Int.max {
+//        print("Second min value \(secondMinValue)")
+        return secondMinValue
+    } else {
+        print("Second min value not found")
+        return nil
+    }
+}
+
+findSecondMinValue(array: shuffledArray)
+
+//Пример 2 - первое неповторяющееся в массиве число
+
+let repeatArray = [1, 2, 2, 4, 5, 4, 1]
+
+for i in 0..<repeatArray.count {
+    var count = 0
+    for j in 0..<repeatArray.count {
+        if repeatArray[i] == repeatArray[j] && i != j {
+            count += 1
+            break
+        }
+    }
+    
+    if count == 0 {
+//        print(repeatArray[i])
+        break
+    }
+}
+
+//Пример 3 - удаление дубликатов их отсортированного списка
+
+var removeArray = [0, 0, 0, 1, 2, 2, 3, 4, 5, 5, 5, 6]
+
+func removeDublicates(array: inout [Int]) -> Int {
+    
+    var last: Int?
+    var index = 0
+    
+    while index < array.count {
+        if array[index] == last {
+            array.remove(at: index)
+        } else {
+            last = array[index]
+            index += 1
+        }
+    }
+    return array.count
+}
+
+removeDublicates(array: &removeArray)
+removeArray
