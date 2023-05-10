@@ -669,3 +669,206 @@ func removeDublicates(array: inout [Int]) -> Int {
 
 removeDublicates(array: &removeArray)
 removeArray
+
+
+//Пример: Найти следующий день теплее предыдущего
+
+class Temp {
+    var value = Int()
+    var index = Int()
+    
+    init(value: Int, index: Int) {
+        self.value = value
+        self.index = index
+    }
+}
+
+struct Stack {
+    
+    private var items: [Temp] = []
+    
+    func peek() -> Temp {
+        guard let topElement = items.first else {
+            fatalError("This stack is empty")
+        }
+        return topElement
+    }
+    
+    mutating func pop() -> Temp {
+        items.removeFirst()
+    }
+    
+    mutating func push(_ element: Temp) {
+        items.insert(element, at: 0)
+    }
+    
+    mutating func isEmpty() -> Bool {
+        items.isEmpty
+    }
+}
+
+let tempArray = [13, 12, 15, 11, 9, 12, 16] //[2, 1, 4, 2, 1, 1, 0]
+
+func temperatures(array: [Int]) -> [Int] {
+    
+    var stack = Stack()
+    var answer = Array(repeating: 0, count: array.count)
+    
+    for index in stride(from: array.count - 1, through: 0, by: -1) {
+        
+        while !stack.isEmpty() && stack.peek().value <= array[index] {
+            stack.pop()
+        }
+        
+        if !stack.isEmpty() {
+            answer[index] = stack.peek().index - index
+        }
+        
+        let newTemp = Temp(value: array[index], index: index)
+        stack.push(newTemp)
+    }
+    
+    return answer
+}
+
+temperatures(array: tempArray)
+
+//Пример: Разложить число на все возможные слагаемые и расположить их в порядке возрастания
+//5
+
+//1 1 1 1 1
+//2 1 1 1
+//2 2 1
+//3 1 1
+//3 2
+//4 1
+//5
+
+func recur(sum: Int, prefix: [Int] = []) { //prefix - числа, которые будем добавлять к нашей сумме
+    
+    if sum == 0 {
+//        print(prefix)
+    } else {
+        for i in 1...sum {
+            if prefix == [] {
+                recur(sum: sum - i, prefix: prefix + [i])
+            } else if prefix.last! >= i {
+                recur(sum: sum - i, prefix: prefix + [i])
+            }
+        }
+    }
+}
+
+recur(sum: 5)
+
+
+//MARK: - Рекурсия
+
+//Базовый случай
+// - В базовом случае нельзя вызывать рекурсию
+// - В базом случае нельзя делать ничего кроме того, что должен сделать базовый случай
+// - Базовый случай должен заканчиваться ключевым словом return
+//Выделить рекурсивный случай и изменение входных параметров
+//Доказать, что изменение данных в рекурсивных случаях в конечном счете приведет к базовому случаю
+
+//Ошибки при выборе базового случая
+// - Выбор слишком большого базовое случая
+// - Не учтено, что базовых случаев может быть больше одного
+
+
+//func factorial(_ n: Int) -> Int {
+//
+//    if n == 0 { //базовый случай
+//        return 1
+//    }
+//
+//    return n * factorial(n - 1) //рекурсивный случай
+//}
+//
+//var x = factorial(5)
+
+
+//3! = 1 * 2 * 3
+//4! = 1 * 2 * 3 * 4 = 3! * 4
+//5! = 1 * 2 * 3 * 4 * 5 = 4! * 5
+
+//factorial(n - 1) - решение меньшей/предыдущей задачи
+
+var recArray = [1, 2, 3, 4, 5, 6] //если left = 1, right = 4 -> 1, 5, 4, 3, 2, 6
+
+func reverse(array: inout [Int], left: Int, right: Int) {
+    
+    if left > right { //первый базовый случай
+        return
+    }
+    
+    if left == right {
+        return
+    }
+    
+    let oldLeft = array[left]
+    array[left] = array[right]
+    array[right] = oldLeft
+    
+    reverse(array: &array, left: left + 1, right: right - 1) //рекурсивный случай
+}
+
+reverse(array: &recArray, left: 1, right: 4)
+
+
+func factorial(_ n: Int) -> Int {
+
+    if n == 0 { //базовый случай
+        return 1
+    }
+    
+    return n * factorial(n - 1) //рекурсивный случай
+}
+
+var x = factorial(3)
+
+//Первый вызов
+//n = 3
+
+//Второй вызов
+//n = 2
+//n = 3
+
+//Третий вызов
+//n = 1
+//n = 2
+//n = 3
+
+//Четвертый вызов
+//n = 0 - срабатывает базовый случай -> 1 (вернули и удалили/pop)
+//n = 1 * 1 -> 1
+//n = 2 * 1 -> 2
+//n = 3 * 2 = 6
+
+//Пример: Разложить число на все возможные слагаемые и расположить их в порядке возрастания
+//5
+
+//1 1 1 1 1
+//2 1 1 1
+//2 2 1
+//3 1 1
+//3 2
+//4 1
+//5
+
+func recur(sum: Int, prefix: [Int] = []) { //prefix - числа, которые будем добавлять к нашей сумме
+    
+    if sum == 0 {
+//        print(prefix)
+    } else {
+        for i in 1...sum {
+            if prefix == [] {
+                recur(sum: sum - i, prefix: prefix + [i])
+            } else if prefix.last! >= i {
+                recur(sum: sum - i, prefix: prefix + [i])
+            }
+        }
+    }
+}
+
+recur(sum: 5)
