@@ -744,7 +744,7 @@ temperatures(array: tempArray)
 //4 1
 //5
 
-func recur(sum: Int, prefix: [Int] = []) { //prefix - числа, которые будем добавлять к нашей сумме
+func recurs(sum: Int, prefix: [Int] = []) { //prefix - числа, которые будем добавлять к нашей сумме
     
     if sum == 0 {
 //        print(prefix)
@@ -759,7 +759,7 @@ func recur(sum: Int, prefix: [Int] = []) { //prefix - числа, которые
     }
 }
 
-recur(sum: 5)
+recurs(sum: 5)
 
 
 //MARK: - Рекурсия
@@ -872,3 +872,106 @@ func recur(sum: Int, prefix: [Int] = []) { //prefix - числа, которые
 }
 
 recur(sum: 5)
+
+
+//MARK: Хеш-таблицы
+
+/*
+Номера телефонов
+ 
+ Петя 123
+ Вася 222
+ Маша 443
+ 
+ O(1)
+ Поиск по ключу: Ключ - имя
+ 
+ ___
+ 
+ 0 Петя 123
+ 1 Вася 222
+ 2 Маша 443
+ 
+ Петя -> (234 + 111 + 432 + 112) % n = 4
+ (234 + 111 + 432 + 112) - хеш-функция
+ Хеширование - преобразование ключа данной длины в данные заданной длины
+ 
+ _ _ _ _    _ _ _ _     _ _ _ _     _ _ _ _
+ 
+ //Коллизия(столкновение)
+ 
+ 1. Метод цепочек - добавление ссылки на следующее значение
+ Связный список
+ 
+ Добавляем Миша
+ 
+ 0 Петя 123
+ 1 Вася 222
+ 2 Маша 443 -> Миша 334
+ 
+ - Расход памяти на ссылку
+ - Медленный обход
+ + Простота
+ 
+ 2. Метод открытой адресации
+ - Сохранить данные в следующую свободную ячейку
+ Движение/Шаг/Пробирование(проба)
+ - линейное - шаг + 1
+ - квадратичное - применение хеш-функции еще раз
+ - двойное хеширование - использование двух функций
+ 
+ + Быстрый обход
+ + Меньший расход памяти
+ - Зависимость от способа обхода
+ - Зависимость от размера массива/кол-во элементов
+ 
+ При удалении у нас есть пустые ячейки
+ 
+ 111
+ 222
+ nil //deleted
+ 333
+ nil
+ nil
+ 555
+ 
+ Рехеширование - перенос всех неудаленных ячеек
+ 
+ */
+
+let firstString = "friend"
+let secondString = "finder"
+
+func charDict(word: String) -> [Character : Int] {
+    var dict = [Character : Int]()
+    
+    for char in word {
+        if dict.keys.contains(char) {
+            dict[char]! += 1
+        } else {
+            dict[char] = 1
+        }
+    }
+    return dict
+}
+
+func anagram(firstString: String, secondString: String) -> Bool {
+    
+    let firstDict = charDict(word: firstString)
+    let secondDict = charDict(word: secondString)
+    
+    if firstDict.keys.count != secondDict.keys.count {
+        return false
+    }
+    
+    for key in firstDict.keys {
+        if firstDict[key] != secondDict[key] {
+            return false
+        }
+    }
+    
+    return true
+}
+
+anagram(firstString: firstString, secondString: secondString)
+
