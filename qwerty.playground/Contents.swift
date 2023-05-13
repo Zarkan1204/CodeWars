@@ -975,3 +975,87 @@ func anagram(firstString: String, secondString: String) -> Bool {
 
 anagram(firstString: firstString, secondString: secondString)
 
+//MARK: - Жадные алгоритмы
+
+//let denominations = [1, 5, 10, 50, 100, 1000, 5000]
+let denominations = [1, 3, 4, 10, 50, 100, 1000, 5000]
+
+func amountBils(summ: Int) -> Int {
+    
+    var currentSum = summ
+    var amountBils = 0
+    
+    for i in stride(from: denominations.count - 1, through: 0, by: -1) {
+        if currentSum >= denominations[i] {
+            let currentAmount = currentSum / denominations[i] //количество монет
+            currentSum -= denominations[i] * currentAmount
+            amountBils += currentAmount
+        }
+    }
+    return amountBils
+}
+
+amountBils(summ: 11006)
+
+//11006 -> 5000 + 5000 + 1000 + 5 + 1
+
+//11006 -> 5000 + 5000 + 1000 + 4 + 1 + 1 //6
+//11006 -> 5000 + 5000 + 1000 + 3 + 3 //5
+
+
+
+//MARK: - Сортировка слиянием
+
+func merge(firstArray: [Int], firstArrayStart: Int,
+           secondArray: [Int], secondArrayStart: Int,
+           dest: inout [Int], destStart: Int, //dest - результирующий массив (приемник)
+           size: Int) {
+    
+    var index1 = firstArrayStart
+    var index2 = secondArrayStart
+    
+    let firstArrayEnd = firstArrayStart + size < firstArray.count ? firstArrayStart + size : firstArray.count
+    let secondArrayEnd = secondArrayStart + size < secondArray.count ? secondArrayStart + size : secondArray.count
+    
+    let iterationsCount = firstArrayEnd - firstArrayStart + secondArrayEnd - secondArrayStart //количество итераций
+    
+    for i in destStart..<destStart + iterationsCount {
+        if index1 < firstArrayEnd && (index2 >= secondArrayEnd || firstArray[index1] < secondArray[index2]) { //прогоняем массив до конца. Если элементов второго массива больше чем элементов первого.
+            dest[i] = firstArray[index1]
+            index1 += 1
+        } else {
+            dest[i] = secondArray[index2]
+            index2 += 1
+        }
+    }
+}
+
+func mergeSort(array: [Int]) -> [Int] {
+    
+    var temp = [Int]()
+    var currentSource = array //источник откуда сливаем в подмассивы
+    var currentDest = Array(repeating: 0, count: array.count) //приемник, куда записываем подмассивы после слияния
+    var size = 1 //текущий размер сливаемых массивов
+    
+    while size < array.count {
+        for i in stride(from: 0, to: array.count, by: size * 2) {
+            merge(firstArray: currentSource, firstArrayStart: i,
+                  secondArray: currentSource, secondArrayStart: i + size,
+                  dest: &currentDest, destStart: i,
+                  size: size)
+        }
+        //После того, как подмассивы были записаны в приемник
+        //приемник и источник меняются местами
+        print(currentSource, "Source")
+        print(currentDest, "Dest")
+        temp = currentSource
+        currentSource = currentDest
+        currentDest = temp
+        size *= 2
+    }
+    return currentSource
+}
+
+var randomArray = [15, 23, 66, 2, 88, 56, 32, 83]
+mergeSort(array: randomArray)
+
