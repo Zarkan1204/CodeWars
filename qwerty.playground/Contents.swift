@@ -1059,3 +1059,39 @@ func mergeSort(array: [Int]) -> [Int] {
 var randomArray = [15, 23, 66, 2, 88, 56, 32, 83]
 mergeSort(array: randomArray)
 
+//MARK: - ARC
+
+class Person {
+    let name: String
+
+    init(name: String) {
+        self.name = name
+        print("\(name) init")
+    }
+
+    deinit {
+        print("\(name) deinit")
+    }
+}
+
+var reference1: Person?
+var reference2: Person?
+var reference3: Person?
+//Значения опциональны - сильных ссылок на класс нет
+
+reference1 = Person(name: "John Appleseed")
+//Экземпляр Person присвоен переменной reference1
+//Между reference1 и Person сильная ссылка
+//ARC держит памят под Person
+
+reference2 = reference1
+reference3 = reference1
+//Добавилось еще 2 сильные ссылки
+
+reference1 = nil
+reference2 = nil
+//Остается одна сильная ссылка на Person
+
+reference3 = nil
+//Person не используется
+//ARC освобождает экземпляр
