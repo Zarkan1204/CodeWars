@@ -228,20 +228,6 @@ func booleanToString(_ b: Bool) -> String {
 }
 booleanToString(true)
 
-
-func quarter(of month: Int) -> Int {
-    var numberOfMonth = 0
-    switch month {
-    case 1...3: numberOfMonth += 1
-    case 4...6: numberOfMonth += 2
-    case 7...9: numberOfMonth += 3
-    case 10...12: numberOfMonth += 4
-    default: print("Error")
-    }
-    return numberOfMonth
-}
-quarter(of: 2)
-
 func simpleMultiplication(_ num: Int) -> Int {
     var result = 0
     if num % 2 == 0 {
